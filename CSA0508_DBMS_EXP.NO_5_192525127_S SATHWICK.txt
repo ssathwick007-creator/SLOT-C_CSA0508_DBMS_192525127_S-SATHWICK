@@ -1,0 +1,212 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATABASE hospital;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> USE hospital;
+Database changed
+mysql> CREATE TABLE Patient(
+    ->     PatientID VARCHAR(10) PRIMARY KEY,
+    ->     PatientName VARCHAR(30),
+    ->     Gender VARCHAR(10),
+    ->     DOB DATE,
+    ->     City VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> CREATE TABLE Doctor(
+    ->     DoctorID VARCHAR(10) PRIMARY KEY,
+    ->     DoctorName VARCHAR(30),
+    ->     JoinDate DATE,
+    ->     Specialization VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> CREATE TABLE Department(
+    ->     DeptID VARCHAR(10) PRIMARY KEY,
+    ->     DeptName VARCHAR(30),
+    ->     RoomNo VARCHAR(10)
+    -> );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> CREATE TABLE Treatment(
+    ->     TreatID VARCHAR(10) PRIMARY KEY,
+    ->     PatientID VARCHAR(10),
+    ->     DoctorID VARCHAR(10),
+    ->     DeptID VARCHAR(10)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> CREATE TABLE Ward(
+    ->     WardID VARCHAR(10) PRIMARY KEY,
+    ->     WardName VARCHAR(20),
+    ->     Floor INT
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> INSERT INTO Patient VALUES
+    -> ('P001','Ramesh','Male','2002-05-15','Salem'),
+    -> ('P002','Harish','Male','2001-08-20','Salem'),
+    -> ('P003','Aishwarya','Female','2003-11-10','Coimbatore'),
+    -> ('P004','Kamesh','Male','2000-04-18','Salem'),
+    -> ('P005','Shalini','Female','2002-07-22','Madurai');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Doctor VALUES
+    -> ('D001','Kumar','2013-06-15','Cardiology'),
+    -> ('D002','Meena','2015-03-20','Neurology'),
+    -> ('D003','Ravi','2012-09-10','Orthopedics');
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Department VALUES
+    -> ('DP01','Cardiology','R101'),
+    -> ('DP02','Neurology','R102'),
+    -> ('DP03','Orthopedics','R103');
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Treatment VALUES
+    -> ('T001','P001','D001','DP01'),
+    -> ('T002','P002','D002','DP02'),
+    -> ('T003','P003','D001','DP01');
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Ward VALUES
+    -> ('W001','General',1),
+    -> ('W002','ICU',2),
+    -> ('W003','Emergency',1);
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT PatientID, PatientName, DOB
+    -> FROM Patient;
++-----------+-------------+------------+
+| PatientID | PatientName | DOB        |
++-----------+-------------+------------+
+| P001      | Ramesh      | 2002-05-15 |
+| P002      | Harish      | 2001-08-20 |
+| P003      | Aishwarya   | 2003-11-10 |
+| P004      | Kamesh      | 2000-04-18 |
+| P005      | Shalini     | 2002-07-22 |
++-----------+-------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Patient
+    -> WHERE Gender='Female';
++-----------+-------------+--------+------------+------------+
+| PatientID | PatientName | Gender | DOB        | City       |
++-----------+-------------+--------+------------+------------+
+| P003      | Aishwarya   | Female | 2003-11-10 | Coimbatore |
+| P005      | Shalini     | Female | 2002-07-22 | Madurai    |
++-----------+-------------+--------+------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Treatment
+    -> WHERE DeptID='DP01';
++---------+-----------+----------+--------+
+| TreatID | PatientID | DoctorID | DeptID |
++---------+-----------+----------+--------+
+| T001    | P001      | D001     | DP01   |
+| T003    | P003      | D001     | DP01   |
++---------+-----------+----------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Doctor
+    -> WHERE JoinDate < '2014-11-01';
++----------+------------+------------+----------------+
+| DoctorID | DoctorName | JoinDate   | Specialization |
++----------+------------+------------+----------------+
+| D001     | Kumar      | 2013-06-15 | Cardiology     |
+| D003     | Ravi       | 2012-09-10 | Orthopedics    |
++----------+------------+------------+----------------+
+2 rows in set (0.04 sec)
+
+mysql> SELECT *
+    -> FROM Department
+    -> WHERE RoomNo <> 'R101';
++--------+-------------+--------+
+| DeptID | DeptName    | RoomNo |
++--------+-------------+--------+
+| DP02   | Neurology   | R102   |
+| DP03   | Orthopedics | R103   |
++--------+-------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Patient
+    -> WHERE PatientName LIKE '%sh';
++-----------+-------------+--------+------------+-------+
+| PatientID | PatientName | Gender | DOB        | City  |
++-----------+-------------+--------+------------+-------+
+| P001      | Ramesh      | Male   | 2002-05-15 | Salem |
+| P002      | Harish      | Male   | 2001-08-20 | Salem |
+| P004      | Kamesh      | Male   | 2000-04-18 | Salem |
++-----------+-------------+--------+------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Patient
+    -> WHERE PatientName LIKE '%sh%';
++-----------+-------------+--------+------------+------------+
+| PatientID | PatientName | Gender | DOB        | City       |
++-----------+-------------+--------+------------+------------+
+| P001      | Ramesh      | Male   | 2002-05-15 | Salem      |
+| P002      | Harish      | Male   | 2001-08-20 | Salem      |
+| P003      | Aishwarya   | Female | 2003-11-10 | Coimbatore |
+| P004      | Kamesh      | Male   | 2000-04-18 | Salem      |
+| P005      | Shalini     | Female | 2002-07-22 | Madurai    |
++-----------+-------------+--------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Patient
+    -> WHERE City LIKE '%Sal%';
++-----------+-------------+--------+------------+-------+
+| PatientID | PatientName | Gender | DOB        | City  |
++-----------+-------------+--------+------------+-------+
+| P001      | Ramesh      | Male   | 2002-05-15 | Salem |
+| P002      | Harish      | Male   | 2001-08-20 | Salem |
+| P004      | Kamesh      | Male   | 2000-04-18 | Salem |
++-----------+-------------+--------+------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Patient
+    -> WHERE PatientName NOT LIKE '______';
++-----------+-------------+--------+------------+------------+
+| PatientID | PatientName | Gender | DOB        | City       |
++-----------+-------------+--------+------------+------------+
+| P003      | Aishwarya   | Female | 2003-11-10 | Coimbatore |
+| P005      | Shalini     | Female | 2002-07-22 | Madurai    |
++-----------+-------------+--------+------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Patient
+    -> WHERE PatientName LIKE '%am%';
++-----------+-------------+--------+------------+-------+
+| PatientID | PatientName | Gender | DOB        | City  |
++-----------+-------------+--------+------------+-------+
+| P001      | Ramesh      | Male   | 2002-05-15 | Salem |
+| P004      | Kamesh      | Male   | 2000-04-18 | Salem |
++-----------+-------------+--------+------------+-------+
+2 rows in set (0.00 sec)
+
+mysql>
