@@ -1,0 +1,116 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATABASE library;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> USE library;
+Database changed
+mysql> CREATE TABLE Book (
+    ->     BookID INT PRIMARY KEY,
+    ->     Title VARCHAR(50),
+    ->     Author VARCHAR(30)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> CREATE TABLE Member (
+    ->     MemberID INT PRIMARY KEY,
+    ->     Name VARCHAR(30),
+    ->     Phone VARCHAR(15)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> CREATE TABLE Staff (
+    ->     StaffID INT PRIMARY KEY,
+    ->     Name VARCHAR(30),
+    ->     Position VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> CREATE TABLE Publisher (
+    ->     PublisherID INT PRIMARY KEY,
+    ->     PublisherName VARCHAR(40),
+    ->     City VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> ^C
+mysql> CREATE TABLE IssueBook (
+    ->     IssueID INT PRIMARY KEY,
+    ->     MemberID INT,
+    ->     BookID INT
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> INSERT INTO Book VALUES
+    -> (101,'Java Programming','James'),
+    -> (102,'Python Basics','Guido'),
+    -> (103,'Database Systems','Navathe');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Publisher VALUES
+    -> (201,'Tech Books','Chennai'),
+    -> (202,'Learning House','Bangalore'),
+    -> (203,'Knowledge Press','Hyderabad');
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO IssueBook VALUES
+    -> (1,1,101),
+    -> (2,2,102),
+    -> (3,3,103);
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Book;
++--------+------------------+---------+
+| BookID | Title            | Author  |
++--------+------------------+---------+
+|    101 | Java Programming | James   |
+|    102 | Python Basics    | Guido   |
+|    103 | Database Systems | Navathe |
++--------+------------------+---------+
+3 rows in set (0.00 sec)
+
+mysql>
+mysql> SELECT * FROM Member;
+Empty set (0.00 sec)
+
+mysql>
+mysql> SELECT * FROM Staff;
+Empty set (0.00 sec)
+
+mysql>
+mysql> SELECT * FROM Publisher;
++-------------+-----------------+-----------+
+| PublisherID | PublisherName   | City      |
++-------------+-----------------+-----------+
+|         201 | Tech Books      | Chennai   |
+|         202 | Learning House  | Bangalore |
+|         203 | Knowledge Press | Hyderabad |
++-------------+-----------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql>
+mysql> SELECT * FROM IssueBook;
++---------+----------+--------+
+| IssueID | MemberID | BookID |
++---------+----------+--------+
+|       1 |        1 |    101 |
+|       2 |        2 |    102 |
+|       3 |        3 |    103 |
++---------+----------+--------+
+3 rows in set (0.00 sec)
+
+mysql>
